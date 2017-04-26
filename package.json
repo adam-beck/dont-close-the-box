@@ -1,0 +1,41 @@
+{
+  "name": "shut-the-box",
+  "version": "1.0.0",
+  "description": "A game developed in react",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adam-beck/shut-the-box.git"
+  },
+  "keywords": [
+    "game",
+    "react"
+  ],
+  "author": "Adam Beck <adam@adambeck.me>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adam-beck/shut-the-box/issues"
+  },
+  "homepage": "https://github.com/adam-beck/shut-the-box#readme",
+  "dependencies": {
+    "prop-types": "^15.5.8",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^6.10.3",
+    "react-hot-loader": "^3.0.0-beta.6",
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.4"
+  }
+}
