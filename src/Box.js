@@ -106,6 +106,11 @@ class Box extends Component {
 
   nextRound() {
 
+    if (this.current !== this.total) {
+      alert('Whoops you didn\'t match the value of the rolled dice!');
+      return;
+    }
+
     this.current = 0;
 
     const newLevers = this.state.levers.map(lever => {
