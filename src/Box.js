@@ -104,6 +104,8 @@ class Box extends Component {
 
   nextRound() {
 
+    this.current = 0;
+
     const newLevers = this.state.levers.map(lever => {
       if (lever.flipped) {
         return Object.assign({}, lever, { frozen: true });
@@ -111,9 +113,15 @@ class Box extends Component {
       return lever;
     });
 
+    const roll1 = rollDice();
+    const roll2 = rollDice();
+    const total = roll1 + roll2;
+
     this.setState(() => {
       return {
-        levers: newLevers
+        levers: newLevers,
+        dice: [roll1, roll2],
+        total
       };
     });
   }
