@@ -10,6 +10,9 @@ function createLevers() {
   }));
 }
 
+/*
+ * Not a truly random dice roll function but good enough for this purpose
+ */
 function rollDice() {
   return Math.floor(Math.random() * 6) + 1;
 }
@@ -34,6 +37,8 @@ class Box extends Component {
     this.onLeverClick = this.onLeverClick.bind(this);
     this.rollDice = this.rollDice.bind(this);
     this.nextRound = this.nextRound.bind(this);
+    this.playLever = this.playLever.bind(this);
+    this.resetLever = this.resetLever.bind(this);
   }
 
   rollDice() {
@@ -44,30 +49,20 @@ class Box extends Component {
     this.setState(() => {
       return {
         dice: [roll1, roll2],
-        diceTotal: total
+        total
       };
     });
   }
 
-  onLeverClick(value) {
-    const selectedLever = this.state.levers.find(lever => lever.value === value);
-
-    if (selectedLever.frozen) {
-      alert('sorry that lever has already been flipped');
+  playLever(selectedLever, index) {
+    if (this.state.dice.length === 0) {
+      alert('You must roll the dice first!');
       return;
-    }
-
-    const index = this.state.levers.indexOf(selectedLever);
-
-    if (lever.flipped) {
-      // we are going to be "resetting" this lever
-    } else {
-      // we are going to be "playing" this lever
     }
 
     const diceValue = this.state.dice[0] + this.state.dice[1];
 
-    if (selectedLever.value > diceValue + this.current) {
+    if (selectedLever.value + this.current > diceValue) {
       alert('Whoops too high');
       return;
     }
@@ -75,13 +70,36 @@ class Box extends Component {
     this.current = this.current + selectedLever.value;
 
     const newLevers = this.state.levers.slice(0, index).concat(Object.assign({}, selectedLever, { flipped: !selectedLever.flipped })).concat(this.state.levers.slice(index + 1))
-    // const newScore = this.state.currentScore.replace(selectedLever.value, '');
+    const scoreIndex =this.state.currentScore.indexOf(selectedLever.value);
+    const newScore = this.state.currentScore.slice(0, scoreIndex).concat(this.state.currentScore.slice(scoreIndex + 1));
 
     this.setState(() => {
       return {
-        levers: newLevers
+        levers: newLevers,
+        currentScore: newScore
       };
     });
+  }
+
+  resetLever() {
+
+  }
+
+  onLeverClick(value) {
+    const selectedLever = this.state.levers.find(lever => lever.value === value);
+    const index = this.state.levers.indexOf(selectedLever);
+
+    if (selectedLever.frozen) {
+      alert('sorry that lever has already been flipped');
+      return;
+    }
+
+    if (selectedLever.flipped) {
+      // we are going to be "resetting" this lever
+    } else {
+      // we are going to be "playing" this lever
+      this.playLever(selectedLever, index);
+    }
   }
 
   nextRound() {
@@ -113,11 +131,11 @@ class Box extends Component {
               frozen={lever.frozen}/>)
           )}
         </div>
-        <h3>Dice: {this.state.dice[0]} | {this.state.dice[1]}</h3>
+        <h3>Dice: {this.state.dice[0]} | {this.state.dice[1]} = {this.state.dice[0] + this.state.dice[1]}</h3>
         <button onClick={this.rollDice}>Roll Dice!</button>
         <button onClick={this.nextRound}>Continue!</button>
         <br />
-        <h3>Current Score: {this.state.currentScore}</h3>
+        <h3>Current Score: {this.state.currentScore.join('')}</h3>
       </div>
     );
   }
