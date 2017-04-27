@@ -33,6 +33,7 @@ class Box extends Component {
     };
 
     this.current = 0;
+    this.started = false;
 
     this.onLeverClick = this.onLeverClick.bind(this);
     this.rollDice = this.rollDice.bind(this);
@@ -42,6 +43,7 @@ class Box extends Component {
   }
 
   rollDice() {
+    this.started = true;
     const roll1 = rollDice();
     const roll2 = rollDice();
     const total = roll1 + roll2;
@@ -140,7 +142,7 @@ class Box extends Component {
           )}
         </div>
         <h3>Dice: {this.state.dice[0]} | {this.state.dice[1]} = {this.state.dice[0] + this.state.dice[1]}</h3>
-        <button onClick={this.rollDice}>Roll Dice!</button>
+        {!this.started && <button onClick={this.rollDice}>Roll Dice!</button>}
         <button onClick={this.nextRound}>Continue!</button>
         <br />
         <h3>Current Score: {this.state.currentScore.join('')}</h3>
