@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Lever from './Lever';
+import { rollDice } from './utils';
 
 function createLevers() {
   return [1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
@@ -8,13 +9,6 @@ function createLevers() {
     flipped: false,
     frozen: false
   }));
-}
-
-/*
- * Not a truly random dice roll function but good enough for this purpose
- */
-function rollDice() {
-  return Math.floor(Math.random() * 6) + 1;
 }
 
 const style = {
