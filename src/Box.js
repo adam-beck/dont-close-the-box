@@ -66,7 +66,7 @@ class Box extends Component {
     this.current = this.current + selectedLever.value;
 
     const newLevers = this.state.levers.slice(0, index).concat(Object.assign({}, selectedLever, { flipped: !selectedLever.flipped })).concat(this.state.levers.slice(index + 1))
-    const scoreIndex =this.state.currentScore.indexOf(selectedLever.value);
+    const scoreIndex = this.state.currentScore.indexOf(selectedLever.value);
     const newScore = this.state.currentScore.slice(0, scoreIndex).concat(this.state.currentScore.slice(scoreIndex + 1));
 
     this.setState(() => {
@@ -77,8 +77,18 @@ class Box extends Component {
     });
   }
 
-  resetLever() {
+  resetLever(selectedLever, index) {
+    this.current = this.current - selectedLever.value;
+    const newLevers = this.state.levers.slice(0, index).concat(Object.assign({}, selectedLever, { flipped: !selectedLever.flipped })).concat(this.state.levers.slice(index + 1))
+    const newScore = this.state.currentScore.concat(selectedLever.value).sort();
 
+    this.setState(() => {
+      return {
+        levers: newLevers,
+        currentScore: newScore
+      };
+    });
+    
   }
 
   onLeverClick(value) {
@@ -92,6 +102,7 @@ class Box extends Component {
 
     if (selectedLever.flipped) {
       // we are going to be "resetting" this lever
+      this.resetLever(selectedLever, index);
     } else {
       // we are going to be "playing" this lever
       this.playLever(selectedLever, index);
@@ -100,7 +111,7 @@ class Box extends Component {
 
   nextRound() {
 
-    if (this.current !== this.total) {
+    if (this.current !== this.state.total) {
       alert('Whoops you didn\'t match the value of the rolled dice!');
       return;
     }
