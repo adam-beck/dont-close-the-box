@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Lever from './Lever';
-import { rollDice } from './utils';
+import { rollDice, findPermutations } from './utils';
 
 function createLevers() {
   return [1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
@@ -23,7 +23,8 @@ class Box extends Component {
       currentScore: [1, 2, 3, 4, 5, 6, 7, 8, 9],
       levers: createLevers(),
       dice: [],
-      total: 0
+      total: 0,
+      gameOver: false
     };
 
     this.current = 0;
@@ -129,11 +130,14 @@ class Box extends Component {
     const roll2 = rollDice();
     const total = roll1 + roll2;
 
+    const possibleCombinations = findPermutations(this.state.currentScore, total);
+
     this.setState(() => {
       return {
         levers: newLevers,
         dice: [roll1, roll2],
-        total
+        total,
+        gameOver: possibleCombinations.length === 0
       };
     });
   }
@@ -153,9 +157,10 @@ class Box extends Component {
         </div>
         <h3>Dice: {this.state.dice[0]} | {this.state.dice[1]} = {this.state.dice[0] + this.state.dice[1]}</h3>
         {!this.started && <button onClick={this.rollDice}>Roll Dice!</button>}
-        <button onClick={this.nextRound}>Continue!</button>
+        {!this.state.gameOver && <button onClick={this.nextRound}>Continue!</button> }
         <br />
         <h3>Current Score: {this.state.currentScore.join('')}</h3>
+        {this.state.gameOver && <h1 style={{color: 'red'}}>GAME OVER</h1>}
       </div>
     );
   }
