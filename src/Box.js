@@ -93,7 +93,6 @@ class Box extends Component {
     const index = this.state.levers.indexOf(selectedLever);
 
     if (selectedLever.frozen) {
-      alert('sorry that lever has already been flipped');
       return;
     }
 
@@ -107,9 +106,7 @@ class Box extends Component {
   }
 
   nextRound() {
-
     if (this.current !== this.state.total) {
-      alert('Whoops you didn\'t match the value of the rolled dice!');
       return;
     }
 
@@ -153,7 +150,7 @@ class Box extends Component {
         </div>
         <div className="dice"><Die value={this.state.dice[0]} /> <Die value={this.state.dice[1]} /></div>
         {!this.started && <button onClick={this.rollDice}>Start Game!</button>}
-        {!this.state.gameOver && this.started && <button onClick={this.nextRound}>Roll Dice!</button> }
+        {!this.state.gameOver && this.started && <button onClick={this.nextRound} disabled={this.current !== this.state.total}>Roll Dice!</button> }
         <br />
         {this.started && <h3>Current Score: {this.state.currentScore.join('')}</h3>}
         {this.state.gameOver && <h1>GAME OVER</h1>}
