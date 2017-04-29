@@ -12,17 +12,23 @@ function createLevers() {
   }));
 }
 
+const startingNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const getNewGameState = () => {
+  return {
+    currentScore: startingNumbers.slice(),
+    levers: createLevers(),
+    dice: [],
+    total: 0,
+    gameOver: false
+  };
+}
+
 class Box extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      currentScore: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      levers: createLevers(),
-      dice: [],
-      total: 0,
-      gameOver: false
-    };
+    this.state = getNewGameState();
 
     this.current = 0;
     this.started = false;
@@ -32,6 +38,15 @@ class Box extends Component {
     this.nextRound = this.nextRound.bind(this);
     this.playLever = this.playLever.bind(this);
     this.resetLever = this.resetLever.bind(this);
+    this.startNewGame = this.startNewGame.bind(this);
+  }
+
+  startNewGame() {
+    this.setState(() => {
+      return getNewGameState()
+    }, () => {
+      this.rollDice();
+    })
   }
 
   rollDice() {
@@ -136,8 +151,10 @@ class Box extends Component {
   }
 
   render() {
+    const scoreVisible = this.started ? '': 'hidden';
     return (
-      <div>
+      <div className="box-wrapper">
+        <h3 className="score" style={{visibility: scoreVisible}}>Current Score: <span>{this.state.currentScore.join('')}</span></h3>
         <div className="box">
           {this.state.levers.map(lever => (
             <Lever
@@ -148,12 +165,17 @@ class Box extends Component {
               frozen={lever.frozen}/>)
           )}
         </div>
-        <div className="dice"><Die value={this.state.dice[0]} /> <Die value={this.state.dice[1]} /></div>
-        {!this.started && <button onClick={this.rollDice}>Start Game!</button>}
-        {!this.state.gameOver && this.started && <button onClick={this.nextRound} disabled={this.current !== this.state.total}>Roll Dice!</button> }
-        <br />
-        {this.started && <h3>Current Score: {this.state.currentScore.join('')}</h3>}
-        {this.state.gameOver && <h1>GAME OVER</h1>}
+        {this.started &&
+            <div className="dice" onClick={this.nextRound}>
+              <Die value={this.state.dice[0]} /> 
+              <Die value={this.state.dice[1]} />
+            </div>
+        }
+        <div className="game-information">
+          {!this.started && <button className="start-button" onClick={this.rollDice}>Start Game!</button>}
+          {this.state.gameOver && <h1 className="game-over">GAME OVER!</h1>}
+          {this.state.gameOver && <button className="start-button" onClick={this.startNewGame}>Start New Game</button>}
+        </div>
       </div>
     );
   }
