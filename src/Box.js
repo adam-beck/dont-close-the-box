@@ -144,7 +144,7 @@ class Box extends Component {
   render() {
     return (
       <div>
-        <div style={style}>
+        <div style={style} className="box">
           {this.state.levers.map(lever => (
             <Lever
               value={lever.value}

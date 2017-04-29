@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -11,13 +12,21 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/static/'
+    publicPath: '/'
   },
   devtool: 'inline-source-map',
   module: {
     rules: [
       {
-        test: /\.jsx?/,
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.jsx?$/,
         use: [
           'babel-loader'
         ],
@@ -28,7 +37,11 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+      inject: 'body'
+    })
   ],
 
   devServer: {

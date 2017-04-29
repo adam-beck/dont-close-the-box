@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css?family=Luckiest+Guy');
+
+body {
+  background: #F0F3F5;
+}
+
+.game-title {
+  color: #0B7A75;
+  font-family: 'Luckiest Guy';
+  font-size: 8em;
+  letter-spacing: 5px;
+  margin: 0;
+  margin-top: 1%;
+  padding: 0;
+  text-align: center;
+}
+
+.box {
+  margin-top: 2%;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 10%;
+}
+
+.box .lever {
+  flex-grow: 1;
+  border: 1px solid rgba(214, 200, 168, 0.15);
+  background-color: #7C3D22;
+  border-radius: 15px;
+  margin: 0 1px;
+}
+
+
+.lever {
+  font-size: 3em;
+  color: #D7C9AA;
+  text-align: center;
+}
+
+.lever.flipped {
+  color: rgba(215, 201, 170, 0.15);
+}
+
+.lever.frozen {
+  color: rgba(0, 0, 0, 0);
+  background-color: #D7C9AA;
+}
+
+.lever h1 {
+  user-select: none;
+  cursor: pointer;
+}

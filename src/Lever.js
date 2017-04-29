@@ -11,16 +11,16 @@ const h1Style = {
   cursor: 'pointer'
 };
 
-function getColor(flipped, frozen) {
+function getClassForCurrentState(flipped, frozen) {
   if (flipped && frozen) {
-    return 'blue';
+    return 'frozen';
   }
 
   if (flipped && !frozen) {
-    return 'red';
+    return 'flipped';
   }
 
-  return 'black'
+  return ''
 }
 
 class Lever extends Component {
@@ -35,10 +35,10 @@ class Lever extends Component {
   }
 
   render() {
-    style = Object.assign({}, style, { color: getColor(this.props.flipped, this.props.frozen) });
+    const className = 'lever ' + getClassForCurrentState(this.props.flipped, this.props.frozen);
 
     return (
-      <div onClick={this.flip} style={style}>
+      <div className={className} onClick={this.flip}>
         <h1 style={h1Style}>{this.props.value}</h1>
       </div>
     );
