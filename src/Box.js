@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Lever from './Lever';
+import Die from './Die';
 import { rollDice, findPermutations } from './utils';
 
 function createLevers() {
@@ -10,10 +11,6 @@ function createLevers() {
     frozen: false
   }));
 }
-
-const style = {
-  display: 'flex'
-};
 
 class Box extends Component {
   constructor(props) {
@@ -144,7 +141,7 @@ class Box extends Component {
   render() {
     return (
       <div>
-        <div style={style} className="box">
+        <div className="box">
           {this.state.levers.map(lever => (
             <Lever
               value={lever.value}
@@ -154,12 +151,12 @@ class Box extends Component {
               frozen={lever.frozen}/>)
           )}
         </div>
-        <h3>Dice: {this.state.dice[0]} | {this.state.dice[1]} = {this.state.dice[0] + this.state.dice[1]}</h3>
+        <div className="dice"><Die value={this.state.dice[0]} /> <Die value={this.state.dice[1]} /></div>
         {!this.started && <button onClick={this.rollDice}>Start Game!</button>}
         {!this.state.gameOver && this.started && <button onClick={this.nextRound}>Roll Dice!</button> }
         <br />
         {this.started && <h3>Current Score: {this.state.currentScore.join('')}</h3>}
-        {this.state.gameOver && <h1 style={{color: 'red'}}>GAME OVER</h1>}
+        {this.state.gameOver && <h1>GAME OVER</h1>}
       </div>
     );
   }

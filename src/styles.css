@@ -35,6 +35,8 @@ body {
   font-size: 3em;
   color: #D7C9AA;
   text-align: center;
+  user-select: none;
+  cursor: pointer;
 }
 
 .lever.flipped {
@@ -46,7 +48,13 @@ body {
   background-color: #D7C9AA;
 }
 
-.lever h1 {
-  user-select: none;
-  cursor: pointer;
+.dice {
+  padding: 50px;
+  text-align: center;
+}
+
+.die {
+  padding: 5px;
+  display: inline-block;
+  width: 100px;
 }

@@ -31,6 +31,12 @@ module.exports = {
           'babel-loader'
         ],
         exclude: /node_modules/
+      },
+      {
+        test: /\.(png|jpg|svg)$/,
+        use: {
+          loader: 'url-loader'
+        }
       }
     ]
   },
