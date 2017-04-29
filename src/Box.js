@@ -89,7 +89,6 @@ class Box extends Component {
         currentScore: newScore
       };
     });
-    
   }
 
   onLeverClick(value) {
@@ -156,10 +155,10 @@ class Box extends Component {
           )}
         </div>
         <h3>Dice: {this.state.dice[0]} | {this.state.dice[1]} = {this.state.dice[0] + this.state.dice[1]}</h3>
-        {!this.started && <button onClick={this.rollDice}>Roll Dice!</button>}
-        {!this.state.gameOver && <button onClick={this.nextRound}>Continue!</button> }
+        {!this.started && <button onClick={this.rollDice}>Start Game!</button>}
+        {!this.state.gameOver && this.started && <button onClick={this.nextRound}>Roll Dice!</button> }
         <br />
-        <h3>Current Score: {this.state.currentScore.join('')}</h3>
+        {this.started && <h3>Current Score: {this.state.currentScore.join('')}</h3>}
         {this.state.gameOver && <h1 style={{color: 'red'}}>GAME OVER</h1>}
       </div>
     );

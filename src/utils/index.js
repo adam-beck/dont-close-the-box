@@ -1,15 +1,9 @@
 /*
  * Not a truly random dice roll function but good enough for this purpose
  */
-function rollDice() {
-  return Math.floor(Math.random() * 6) + 1;
-}
+const rollDice = () => Math.floor(Math.random() * 6) +1;
 
-function sumArray(array) {
-  return array.reduce((total, current) => {
-    return total + current;
-  }, 0);
-}
+const sumArray = array => array.reduce((total, current) => total + current, 0);
 
 function findPermutations(next, target, current, collection) {
   current = current || [];
