@@ -19,8 +19,7 @@ const getNewGameState = () => {
     currentScore: startingNumbers.slice(),
     levers: createLevers(),
     dice: [],
-    total: 0,
-    gameOver: false
+    total: 0
   };
 }
 
@@ -31,7 +30,6 @@ class Box extends Component {
     this.state = getNewGameState();
 
     this.current = 0;
-    this.started = false;
 
     this.onLeverClick = this.onLeverClick.bind(this);
     this.rollDice = this.rollDice.bind(this);
@@ -45,12 +43,13 @@ class Box extends Component {
     this.setState(() => {
       return getNewGameState()
     }, () => {
+      this.current = 0;
+      this.props.onStateChange('PLAYING');
       this.rollDice();
     })
   }
 
   rollDice() {
-    this.started = true;
     const roll1 = rollDice();
     const roll2 = rollDice();
     const total = roll1 + roll2;
@@ -64,15 +63,9 @@ class Box extends Component {
   }
 
   playLever(selectedLever, index) {
-    if (this.state.dice.length === 0) {
-      alert('You must roll the dice first!');
-      return;
-    }
-
     const diceValue = this.state.dice[0] + this.state.dice[1];
 
     if (selectedLever.value + this.current > diceValue) {
-      alert('Whoops too high');
       return;
     }
 
@@ -82,17 +75,17 @@ class Box extends Component {
     const scoreIndex = this.state.currentScore.indexOf(selectedLever.value);
     const newScore = this.state.currentScore.slice(0, scoreIndex).concat(this.state.currentScore.slice(scoreIndex + 1));
 
-    if (newScore.length === 0) {
-      this.props.onWin();
-      return;
-    }
-
     this.setState(() => {
       return {
         levers: newLevers,
         currentScore: newScore
       };
     });
+
+    if (newScore.length === 0) {
+      this.props.onStateChange('WON')
+      return;
+    }
   }
 
   resetLever(selectedLever, index) {
@@ -145,18 +138,21 @@ class Box extends Component {
 
     const possibleCombinations = findPermutations(this.state.currentScore, total);
 
+    if (possibleCombinations.length === 0) {
+      this.props.onStateChange('LOST');
+    }
+
     this.setState(() => {
       return {
         levers: newLevers,
         dice: [roll1, roll2],
-        total,
-        gameOver: possibleCombinations.length === 0
+        total
       };
     });
   }
 
   render() {
-    const scoreVisible = this.started ? '': 'hidden';
+    const scoreVisible = this.props.state !== 1 ? '': 'hidden';
     return (
       <div className="box-wrapper">
         <h3 className="score" style={{visibility: scoreVisible}}>Current Score: <span>{this.state.currentScore.join('')}</span></h3>
@@ -170,16 +166,16 @@ class Box extends Component {
               frozen={lever.frozen}/>)
           )}
         </div>
-        {this.started &&
+        {this.props.state !== 1 &&
             <div className="dice" onClick={this.nextRound}>
               <Die value={this.state.dice[0]} />
               <Die value={this.state.dice[1]} />
             </div>
         }
         <div className="game-information">
-          {!this.started && <button className="start-button" onClick={this.rollDice}>Start Game!</button>}
-          {this.state.gameOver && <h1 className="game-over">GAME OVER!</h1>}
-          {this.state.gameOver && <button className="start-button" onClick={this.startNewGame}>Start New Game</button>}
+          {this.props.state === 1 && <button className="start-button" onClick={this.startNewGame}>Start Game!</button>}
+          {this.props.state === 4 && <h1 className="game-over">GAME OVER!</h1>}
+          {(this.props.state === 4 || this.props.state === 3) && <button className="start-button" onClick={this.startNewGame}>Start New Game</button>}
         </div>
       </div>
     );
