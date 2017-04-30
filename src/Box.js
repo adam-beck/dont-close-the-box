@@ -82,6 +82,11 @@ class Box extends Component {
     const scoreIndex = this.state.currentScore.indexOf(selectedLever.value);
     const newScore = this.state.currentScore.slice(0, scoreIndex).concat(this.state.currentScore.slice(scoreIndex + 1));
 
+    if (newScore.length === 0) {
+      this.props.onWin();
+      return;
+    }
+
     this.setState(() => {
       return {
         levers: newLevers,
@@ -167,7 +172,7 @@ class Box extends Component {
         </div>
         {this.started &&
             <div className="dice" onClick={this.nextRound}>
-              <Die value={this.state.dice[0]} /> 
+              <Die value={this.state.dice[0]} />
               <Die value={this.state.dice[1]} />
             </div>
         }

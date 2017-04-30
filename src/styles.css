@@ -53,6 +53,7 @@ body {
   border-radius: 5px;
   box-shadow: none;
   margin: 50px;
+  margin-bottom: 0;
 }
 
 .box {
