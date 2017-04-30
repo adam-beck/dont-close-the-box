@@ -106,6 +106,7 @@ class Box extends Component {
   }
 
   nextRound() {
+    // woah there! you can't jump to the next round without meeting the current dice total
     if (this.current !== this.state.dice[0] + this.state.dice[1]) {
       return;
     }
@@ -137,10 +138,9 @@ class Box extends Component {
   }
 
   render() {
-    const scoreVisible = this.props.state !== 1 ? '': 'hidden';
     return (
       <div className="box-wrapper">
-        <h3 className="score" style={{visibility: scoreVisible}}>Current Score: <span>{this.state.currentScore.join('')}</span></h3>
+        <Score state={this.props.state} score={this.state.currentScore} />
         <div className="box">
           {this.state.levers.map(lever => (
             <Lever
@@ -151,20 +151,38 @@ class Box extends Component {
               frozen={lever.frozen}/>)
           )}
         </div>
-        {this.props.state !== 1 &&
-            <div className="dice" onClick={this.nextRound}>
-              <Die value={this.state.dice[0]} />
-              <Die value={this.state.dice[1]} />
-            </div>
-        }
-        <div className="game-information">
-          {this.props.state === 1 && <button className="start-button" onClick={this.startNewGame}>Start Game!</button>}
-          {this.props.state === 4 && <h1 className="game-over">GAME OVER!</h1>}
-          {(this.props.state === 4 || this.props.state === 3) && <button className="start-button" onClick={this.startNewGame}>Start New Game</button>}
-        </div>
+        {this.props.state !== 1 && <Dice dice={this.state.dice} onClick={this.nextRound} />}
+        <GameInformation state={this.props.state} newGame={this.startNewGame} />
       </div>
     );
   }
+}
+
+const Score = ({ state, score }) => {
+  const scoreVisible = state !== 1 ? '': 'hidden';
+  return (
+    <h3 className="score" style={{visibility: scoreVisible}}>Current Score: <span>{score.join('')}</span></h3>
+  );
+}
+
+const Dice = ({ dice, onClick }) => {
+  return (
+    <div className="dice" onClick={onClick}>
+      <Die value={dice[0]} />
+      <Die value={dice[1]} />
+    </div>
+  );
+}
+
+const GameInformation = ({ state, newGame }) => {
+  const buttonText = state === 1 ? 'Start Game' : 'Start New Game';
+
+  return (
+    <div className="game-information">
+      {state === 4 && <h1 className="game-over">GAME OVER!</h1>}
+      {state !== 2 && <button className="start-button" onClick={newGame}>{buttonText}</button>}
+    </div>
+  );
 }
 
 export default Box;
