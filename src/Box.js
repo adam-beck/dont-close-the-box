@@ -18,8 +18,7 @@ const getNewGameState = () => {
   return {
     currentScore: startingNumbers.slice(),
     levers: createLevers(),
-    dice: [],
-    total: 0
+    dice: []
   };
 }
 
@@ -32,7 +31,6 @@ class Box extends Component {
     this.current = 0;
 
     this.onLeverClick = this.onLeverClick.bind(this);
-    this.rollDice = this.rollDice.bind(this);
     this.nextRound = this.nextRound.bind(this);
     this.playLever = this.playLever.bind(this);
     this.resetLever = this.resetLever.bind(this);
@@ -40,25 +38,14 @@ class Box extends Component {
   }
 
   startNewGame() {
+    const roll1 = rollDice();
+    const roll2 = rollDice();
+
     this.setState(() => {
-      return getNewGameState()
+      return Object.assign(getNewGameState(), { dice: [roll1, roll2] });
     }, () => {
       this.current = 0;
       this.props.onStateChange('PLAYING');
-      this.rollDice();
-    })
-  }
-
-  rollDice() {
-    const roll1 = rollDice();
-    const roll2 = rollDice();
-    const total = roll1 + roll2;
-
-    this.setState(() => {
-      return {
-        dice: [roll1, roll2],
-        total
-      };
     });
   }
 
@@ -119,7 +106,7 @@ class Box extends Component {
   }
 
   nextRound() {
-    if (this.current !== this.state.total) {
+    if (this.current !== this.state.dice[0] + this.state.dice[1]) {
       return;
     }
 
@@ -134,9 +121,8 @@ class Box extends Component {
 
     const roll1 = rollDice();
     const roll2 = rollDice();
-    const total = roll1 + roll2;
 
-    const possibleCombinations = findPermutations(this.state.currentScore, total);
+    const possibleCombinations = findPermutations(this.state.currentScore, roll1 + roll2);
 
     if (possibleCombinations.length === 0) {
       this.props.onStateChange('LOST');
@@ -145,8 +131,7 @@ class Box extends Component {
     this.setState(() => {
       return {
         levers: newLevers,
-        dice: [roll1, roll2],
-        total
+        dice: [roll1, roll2]
       };
     });
   }
