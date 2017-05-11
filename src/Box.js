@@ -175,12 +175,10 @@ const Dice = ({ dice, onClick }) => {
 }
 
 const GameInformation = ({ state, newGame }) => {
-  const buttonText = state === 1 ? 'Start Game' : 'Start New Game';
-
   return (
     <div className="game-information">
       {state === 4 && <h1 className="game-over">GAME OVER!</h1>}
-      {state !== 2 && <button className="start-button" onClick={newGame}>{buttonText}</button>}
+      {state !== 2 && <button className="start-button" onClick={newGame}>Start</button>}
     </div>
   );
 }

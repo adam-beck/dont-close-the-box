@@ -48,7 +48,7 @@ const Rules = () => {
     <div className="rules">
       <a className="rules header" href="#rules">Rules</a>
 
-      <p id="rules">
+      <p>
         The Objective of Shut the Box is to flip all 9 levers. When that happens you get to shut the box!
       </p>
 
